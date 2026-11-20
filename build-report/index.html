@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="How the Assembly Guide tool was built, and how it works.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<title>Assembly Guide Build Report</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one reading column on cool drawing-office paper; the app's own step blue is the only accent,
+     and its dashed "where it goes" frame appears once, on the pipeline's destination. */
+  :root {
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --ink: #14202e;
+    --muted: #55657a;
+    --line: #d4dce8;
+    --accent: #1f63c4;
+    --accent-soft: #e2ecfb;
+    --frame: #0b2a5c;
+    --bar: #2f7de1;
+    --bar-rest: #9db9e0;
+    --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+    --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1620;
+      --surface: #17212e;
+      --ink: #e6edf5;
+      --muted: #9fb0c3;
+      --line: #2b3a4c;
+      --accent: #7fb4f7;
+      --accent-soft: #1c2f48;
+      --frame: #cfe0f7;
+      --bar: #5a9cf0;
+      --bar-rest: #3d5b85;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1620;
+    --surface: #17212e;
+    --ink: #e6edf5;
+    --muted: #9fb0c3;
+    --line: #2b3a4c;
+    --accent: #7fb4f7;
+    --accent-soft: #1c2f48;
+    --frame: #cfe0f7;
+    --bar: #5a9cf0;
+    --bar-rest: #3d5b85;
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    padding-block: 2.5rem 4rem;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .page {
+    max-width: 46rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  section, header { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.2; }
+  h1 { font-size: 2.1rem; font-weight: 600; letter-spacing: -0.01em; }
+  h2 { font-size: 1.45rem; font-weight: 600; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.05rem; font-weight: 600; }
+  p, ul, ol, dl { margin: 0; }
+  ul { padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.35rem; }
+  a { color: var(--accent); text-underline-offset: 0.15em; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  code { font-family: var(--font-data); font-size: 0.9em; background: var(--accent-soft); padding: 0.05em 0.35em; border-radius: 3px; overflow-wrap: anywhere; }
+  .eyebrow { font-family: var(--font-data); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .lede { font-size: 1.12rem; color: var(--ink); }
+  .note { color: var(--muted); font-size: 0.92rem; }
+
+  /* Facts under the title: plain pairs, no tiles. */
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); gap: 1rem 1.5rem; padding-block: 1rem; border-block: 1px solid var(--line); }
+  .facts div { display: flex; flex-direction: column; gap: 0.1rem; }
+  .facts dt { font-size: 0.82rem; color: var(--muted); }
+  .facts dd { margin: 0; font-family: var(--font-data); font-size: 1.15rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  /* Build stages: a real sequence, so each row carries its milestone code. */
+  .stages { display: flex; flex-direction: column; }
+  .stage { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.25rem 1rem; padding-block: 0.8rem; border-bottom: 1px solid var(--line); }
+  .stage:first-child { border-top: 1px solid var(--line); }
+  .stage .code { font-family: var(--font-data); font-size: 0.85rem; color: var(--accent); padding-top: 0.15rem; }
+  .stage .body { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+  .stage strong { font-weight: 600; }
+  .stage span.what { color: var(--muted); }
+
+  /* Effort chart: one scale for every bar (the longest bar is 25.1 M). */
+  .chart { display: flex; flex-direction: column; gap: 0.55rem; }
+  .row { display: grid; grid-template-columns: 11rem minmax(0, 1fr) 6.5rem; gap: 0.75rem; align-items: center; }
+  .row .name { font-size: 0.92rem; }
+  .row .track { height: 0.9rem; background: transparent; border-left: 1px solid var(--line); }
+  .row .fill { height: 100%; background: var(--bar-rest); border-radius: 0 2px 2px 0; min-width: 2px; }
+  .row.top .fill { background: var(--bar); }
+  .row .value { font-family: var(--font-data); font-size: 0.85rem; font-variant-numeric: tabular-nums; text-align: right; color: var(--muted); }
+  .row.top .name, .row.top .value { font-weight: 600; color: var(--ink); }
+
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.93rem; }
+  th, td { text-align: right; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; padding-left: 0; }
+  th:last-child, td:last-child { padding-right: 0; }
+  thead th { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+  tbody td { font-family: var(--font-data); }
+  tbody td:first-child { font-family: var(--font-body); }
+  tbody td:last-child { font-weight: 500; }
+
+  /* The pipeline: solid boxes are things that exist; the dashed frame is where it all ends up. */
+  .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.5rem; }
+  .box { flex: 1 1 8.5rem; min-width: 0; background: var(--surface); border: 1.5px solid var(--frame); border-radius: 4px; padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.2rem; }
+  .box b { font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; }
+  .box span { font-size: 0.84rem; color: var(--muted); }
+  .box.seat { border-style: dashed; background: var(--accent-soft); }
+  .arrow { align-self: center; font-family: var(--font-data); color: var(--muted); flex: 0 0 auto; }
+
+  .parts { display: flex; flex-direction: column; gap: 1.6rem; }
+  .part { display: flex; flex-direction: column; gap: 0.55rem; }
+  .part h3 .n { font-family: var(--font-data); font-weight: 500; color: var(--accent); margin-right: 0.5rem; }
+
+  @media (max-width: 34rem) {
+    h1 { font-size: 1.7rem; }
+    .stage { grid-template-columns: 1fr; }
+    .row { grid-template-columns: minmax(0, 1fr) 6rem; }
+    .row .name { grid-column: 1 / -1; }
+    .arrow { display: none; }
+    .box { flex-basis: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <span class="eyebrow">Build report · 15 to 19 November 2026</span>
+    <h1>Assembly Guide Build Report</h1>
+    <p class="lede">A browser tool that takes a STEP CAD file and an instructions file, blows a server-style assembly apart so people can see where each part goes, then walks them through putting it together.</p>
+    <p>Try the stand-in demo: <a href="https://unique-name27.github.io/assembly-guide-demo/">unique-name27.github.io/assembly-guide-demo</a>. It uses an invented 4U server, not a real product.</p>
+    <dl class="facts">
+      <div><dt>Commits</dt><dd>8</dd></div>
+      <div><dt>Lines of code and tests</dt><dd>123,000</dd></div>
+      <div><dt>Files</dt><dd>475</dd></div>
+      <div><dt>Automated tests</dt><dd>4,566</dd></div>
+      <div><dt>Parts in the stand-in</dt><dd>143</dd></div>
+    </dl>
+  </header>
+
+  <section>
+    <h2>What was built, in order</h2>
+    <div class="stages">
+      <div class="stage"><span class="code">Before M0</span><div class="body"><strong>Scouting and design</strong><span class="what">A survey of reusable code, then three competing designs merged into one plan.</span></div></div>
+      <div class="stage"><span class="code">M0–M1</span><div class="body"><strong>Converter</strong><span class="what">A stand-in 4U server written as a real STEP file, deliberately messy like real CAD. The STEP-to-web converter and a bare viewer.</span></div></div>
+      <div class="stage"><span class="code">M2</span><div class="body"><strong>Blow-up</strong><span class="what">The exploded view, its slider, floor labels, three looks (Studio, Night, Blueprint) and quality levels.</span></div></div>
+      <div class="stage"><span class="code">M3</span><div class="body"><strong>Walkthrough</strong><span class="what">The step-by-step player: warnings, torque, the seat outline, cables, a link and QR code per step, and resume.</span></div></div>
+      <div class="stage"><span class="code">M4</span><div class="body"><strong>Demo</strong><span class="what">The public stand-in demo on GitHub Pages.</span></div></div>
+      <div class="stage"><span class="code">M5</span><div class="body"><strong>Write the steps</strong><span class="what">Turning a step spreadsheet, a parts list or a Word procedure into a guide, with a review screen.</span></div></div>
+      <div class="stage"><span class="code">M6</span><div class="body"><strong>Real-file rehearsal</strong><span class="what">A public multi-part STEP file through the same converter, stop and resume, a revised model, and private guides.</span></div></div>
+      <div class="stage"><span class="code">M7</span><div class="body"><strong>Polish</strong><span class="what">The finished-build summary, the print page, kit pictures, optional sound and phone layout.</span></div></div>
+      <div class="stage"><span class="code">After M7</span><div class="body"><strong>Side-by-side pieces</strong><span class="what">Two heatsinks 10 mm apart were drawn as one blue block. Each close neighbour now gets its own outline and its own seat frame.</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Agents and tokens</h2>
+    <p>One lead session planned the work, wrote the briefs, reviewed every result and ran the final checks. The building and the adversarial checking were done by agents, in 28 workflow runs. After each build stage a separate agent was told to break the work, and its findings went to a fixer.</p>
+    <dl class="facts">
+      <div><dt>Agents</dt><dd>about 143</dd></div>
+      <div><dt>On Fable</dt><dd>about 113</dd></div>
+      <div><dt>On Opus</dt><dd>27</dd></div>
+      <div><dt>Agent working time</dt><dd>about 90 h</dd></div>
+      <div><dt>Tool calls</dt><dd>about 15,000</dd></div>
+    </dl>
+    <p class="note">Opus agents took over from the late "Write the steps" rounds onward, to cut cost. Three of the 143 were single helpers outside a workflow.</p>
+
+    <h3>Where the agent effort went</h3>
+    <div class="chart" role="img" aria-label="Agent effort by stage, in millions of tokens as counted by the workflow tool. Write the steps took 25.1 million, about half of the total of 50.7 million.">
+      <div class="row"><span class="name">Scouting and design</span><span class="track"><span class="fill" style="width:2.6%; display:block"></span></span><span class="value">0.7 M · 1%</span></div>
+      <div class="row"><span class="name">Converter</span><span class="track"><span class="fill" style="width:10.6%; display:block"></span></span><span class="value">2.7 M · 5%</span></div>
+      <div class="row"><span class="name">Blow-up</span><span class="track"><span class="fill" style="width:27.3%; display:block"></span></span><span class="value">6.9 M · 14%</span></div>
+      <div class="row"><span class="name">Walkthrough</span><span class="track"><span class="fill" style="width:40.4%; display:block"></span></span><span class="value">10.1 M · 20%</span></div>
+      <div class="row top"><span class="name">Write the steps</span><span class="track"><span class="fill" style="width:100%; display:block"></span></span><span class="value">25.1 M · 49%</span></div>
+      <div class="row"><span class="name">Real-file rehearsal</span><span class="track"><span class="fill" style="width:9.7%; display:block"></span></span><span class="value">2.4 M · 5%</span></div>
+      <div class="row"><span class="name">Polish</span><span class="track"><span class="fill" style="width:6.9%; display:block"></span></span><span class="value">1.7 M · 3%</span></div>
+      <div class="row"><span class="name">Side-by-side pieces</span><span class="track"><span class="fill" style="width:4.6%; display:block"></span></span><span class="value">1.2 M · 2%</span></div>
+    </div>
+    <p class="note">Millions of tokens as counted by the workflow tool, 50.7 M in all. That counter is lower than the full totals below, so read it for shares, not totals. "Write the steps" took half because reading torque values out of free text safely needed seven fix rounds.</p>
+
+    <h3>Full token totals</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Tokens</th><th>Lead (Fable)</th><th>Fable agents</th><th>Opus agents</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Written (output)</td><td>1.0 M</td><td>17.0 M</td><td>2.0 M</td><td>20 M</td></tr>
+          <tr><td>New text read</td><td>5.9 M</td><td>105.6 M</td><td>7.9 M</td><td>119 M</td></tr>
+          <tr><td>Re-read from cache</td><td>175 M</td><td>2,955 M</td><td>417 M</td><td>3,547 M</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Added up from the session's own transcripts. Cached re-reads are the same text read again on each turn and are billed at a small fraction of the price of new text.</p>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="flow" aria-label="STEP file, then the converter, then a bundle of three files, then the guide file is added, then the viewer in a browser">
+      <div class="box"><b>STEP file</b><span>the CAD assembly</span></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="box"><b>Converter</b><span>runs once, on your PC</span></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="box"><b>Bundle</b><span>model, parts list, report</span></div>
+      <span class="arrow" aria-hidden="true">+</span>
+      <div class="box"><b>Guide file</b><span>the steps</span></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="box seat"><b>Viewer</b><span>a web link, no server</span></div>
+    </div>
+
+    <div class="parts">
+      <div class="part">
+        <h3><span class="n">1</span>Convert once, on your PC</h3>
+        <p>A Python script reads the STEP file and walks its assembly tree. It turns each unique part shape into triangles once and saves its progress, so a long run can be stopped and resumed. A second script shrinks and compresses the shapes. The result is three files:</p>
+        <ul>
+          <li><code>model.glb</code> holds only the unique shapes.</li>
+          <li><code>parts.json</code> gives every part's id, name, part number, position, colour, kind (sheet metal, board, fastener, cable, module) and the direction it pulls out.</li>
+          <li><code>_report.json</code> says pass, warn or fail in plain words. A fail blocks publishing.</li>
+        </ul>
+        <p>Part ids come from the part's place in the tree, not its name, because CAD names are often missing or repeated.</p>
+      </div>
+
+      <div class="part">
+        <h3><span class="n">2</span>The guide file</h3>
+        <p><code>guide.json</code> sits beside the model and lists the steps: which parts, how many, how they move in, the tool, the torque, warnings, checks, the camera view and cable routes. It records which model it was written against. When the CAD is revised, the tool lists the steps that no longer match, and nothing is silently re-pointed.</p>
+      </div>
+
+      <div class="part">
+        <h3><span class="n">3</span>The viewer</h3>
+        <p>A static web page with three layers:</p>
+        <ul>
+          <li><strong>The engine</strong> draws the parts with three.js. It stops drawing when nothing moves, so an idle page costs nothing.</li>
+          <li><strong>The player</strong> works out where every part is for any step and any moment of that step. Because position is a pure calculation, scrubbing, going back, replay, reduced motion and repeatable screenshots all come from the same code.</li>
+          <li><strong>The interface</strong> is ordinary page elements beside the picture, so everything works by keyboard alone.</li>
+        </ul>
+      </div>
+
+      <div class="part">
+        <h3><span class="n">4</span>What the person sees</h3>
+        <ul>
+          <li><strong>Blow-up.</strong> The model opens assembled, then comes apart in layers. A slider scrubs it.</li>
+          <li><strong>Each step.</strong> The warning and the torque show before anything moves. The piece is highlighted, a dashed frame marks where it goes, and it travels in along its real direction.</li>
+          <li><strong>Cables.</strong> A cable is drawn along its route with both ends named. It is never flown in as a rigid block.</li>
+          <li><strong>Finding a part.</strong> A kit list with pictures, a search, and clicking a part.</li>
+          <li><strong>Sharing and finishing.</strong> Every step has its own link and QR code. There is a print page, and a finished-build summary that repeats every torque value.</li>
+        </ul>
+      </div>
+
+      <div class="part">
+        <h3><span class="n">5</span>Write the steps</h3>
+        <p>You load a step spreadsheet, a parts list or a Word procedure. Each row is matched to CAD parts by part number first, then by name. Sure matches are accepted, unsure ones ask you, and nothing is guessed silently. Torque values are read by strict rules that ask whenever the text is unclear. The draft stays in your browser, and nothing you load leaves it.</p>
+      </div>
+
+      <div class="part">
+        <h3><span class="n">6</span>Publishing</h3>
+        <p>One command publishes the stand-in to the public demo. Real CAD and real guides live in a folder that version control ignores, and a guard refuses to publish them to a public address.</p>
+      </div>
+
+      <div class="part">
+        <h3><span class="n">7</span>How it was checked</h3>
+        <p>Unit tests cover the logic. A screenshot harness drives the real page in a headless browser and fails on any console error. Accessibility was treated as a requirement: keyboard-only use, large targets, reduced motion, and nothing said by colour alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Not done yet</h2>
+    <ul>
+      <li>The owner's real STEP file has not been run through the tool. The stand-in and a public test file have.</li>
+      <li>Real guides need a host with access control before they can be shared.</li>
+      <li>Nobody has listened to the sounds, printed the steps on paper, or opened the demo on a real phone.</li>
+      <li>A CAD file with thousands of parts has not been tried, and "Write the steps" has not been run on a real model.</li>
+      <li>Nothing was checked on a high-resolution (2x or 3x) screen.</li>
+    </ul>
+  </section>
+
+</div>
+</body>
+</html>

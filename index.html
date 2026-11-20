@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="connect-src &#39;self&#39; blob: data:; img-src &#39;self&#39; blob: data:; media-src &#39;self&#39; blob: data:; font-src &#39;self&#39; data:; worker-src &#39;self&#39; blob:; form-action &#39;none&#39;; frame-src &#39;none&#39;; object-src &#39;none&#39;">
+    <meta name="referrer" content="no-referrer">
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <title>Assembly guide</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <!-- What is on screen before the viewer's script has loaded: the look's own background (from the
+         last visit) and a quiet loading message, so the first second is never a blank white page. -->
+    <script>
+      (function () {
+        try {
+          var paint = JSON.parse(localStorage.getItem('ag-paint') || 'null');
+          var asked = new URLSearchParams(location.search).get('look');
+          var colours = paint && (paint[asked] || paint[paint.last]);
+          if (!colours) return;
+          var style = document.documentElement.style;
+          style.setProperty('--backdrop', colours[0]);
+          style.setProperty('--ink', colours[1]);
+          style.colorScheme = colours[2];
+        } catch (error) {}
+      })();
+    </script>
+    <style>html,body{background:var(--backdrop,#e9eaec);height:100%;color:var(--ink,#1b1e23);margin:0}#boot{pointer-events:none;place-content:center;justify-items:center;gap:12px;font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;display:grid;position:fixed;inset:0}#boot p{margin:0}#boot .bar{background:#80808047;border-radius:3px;width:220px;height:6px;overflow:hidden}#boot .bar span{opacity:.55;background:currentColor;border-radius:3px;width:40%;height:100%;animation:1.6s ease-in-out infinite boot-slide;display:block}@keyframes boot-slide{0%{transform:translate(-100%)}to{transform:translate(250%)}}@media (prefers-reduced-motion:reduce){#boot .bar span{opacity:.3;width:100%;animation:none}}</style>
+    <script type="module" crossorigin src="./assets/index-cDUc0a1a.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CPDGM_ka.css">
+  </head>
+  <body>
+    <!-- The 3D view. It takes focus so the arrow, plus and minus keys can move it. Parts are also listed in the panel, which is the way to select them without a pointer. -->
+    <canvas id="stage" tabindex="0" role="application" aria-roledescription="3D view" aria-label="3D view of the assembly" aria-describedby="stage-help stage-seen"></canvas>
+    <p id="stage-help" hidden>Arrow keys turn and tilt the view. Plus and minus zoom in and out. The same moves are buttons on the page, behind Move view. The Blow apart slider pulls the parts apart and puts them back. To select a part, use the parts list.</p>
+    <!-- The same for "Write the steps". -->
+    <p id="stage-help-write" hidden>Arrow keys turn and tilt the view. Plus and minus zoom in and out. To choose a part for a row, use Choose another part in that row: its list does everything a click does.</p>
+    <!-- While building step by step: written when the machine is shown from the rear (left and right are then the other way round in the picture). -->
+    <p id="stage-seen" hidden></p>
+    <div id="ui"></div>
+    <div id="boot" role="status">
+      <p>Loading the assembly guide</p>
+      <div class="bar" aria-hidden="true"><span></span></div>
+    </div>
+    <noscript>This assembly guide needs JavaScript to show the 3D model.</noscript>
+  </body>
+</html>

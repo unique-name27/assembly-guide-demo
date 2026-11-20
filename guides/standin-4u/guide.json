@@ -1,0 +1,964 @@
+{
+  "v": 1,
+  "id": "standin-4u",
+  "title": "4U GPU server",
+  "builtFor": {
+    "sha256": "f83d4da9621f2f2956ea4e149601f6318676474ebdff8385eaa6b66e86f88780",
+    "parts": 143
+  },
+  "meta": {
+    "minutes": 50,
+    "people": 1,
+    "intro": "Work on a clear bench with the lid off. The case arrives with its fans, drive cage, power board and network card already fitted. The drives and the power supplies go in last, from outside. Get a second person to help whenever the case has to be lifted.",
+    "tools": {
+      "wrist-strap": {
+        "name": "Anti-static wrist strap",
+        "note": "Clip it to bare metal on the case."
+      },
+      "ph1": {
+        "name": "Phillips screwdriver, size 1, with a torque setting"
+      },
+      "t30": {
+        "name": "Torx T30 screwdriver with a torque setting"
+      }
+    }
+  },
+  "callouts": {
+    "static": {
+      "level": "warning",
+      "text": "Static can damage the boards. Put on the wrist strap and clip it to bare metal on the case before you touch any board."
+    },
+    "socket-pins": {
+      "level": "warning",
+      "text": "Do not touch the gold pins in the socket or the gold pads under the processor. A bent pin cannot be repaired."
+    },
+    "no-power-cord": {
+      "level": "warning",
+      "text": "Do not plug in any power cord yet. Every power supply must be pushed fully in, with its latch clicked, before it gets a cord."
+    },
+    "screws-loose-first": {
+      "level": "caution",
+      "text": "Fit all nine screws loosely first. Then tighten them in the same order."
+    },
+    "heatsink-straight": {
+      "level": "caution",
+      "text": "Lower each heatsink straight down. Do not slide it about: that smears the paste."
+    },
+    "cables-flat": {
+      "level": "caution",
+      "text": "Lay both cables flat on the floor of the case. The GPU board goes in over them later."
+    },
+    "gpu-board-cables": {
+      "level": "caution",
+      "text": "Keep the two floor cables flat as the board comes down, so that neither is trapped."
+    },
+    "gpu-two-hands": {
+      "level": "caution",
+      "text": "Each GPU module is heavy. Hold it in both hands by the metal bracket and the far edge, never by the cover."
+    },
+    "drives-straight": {
+      "level": "caution",
+      "text": "Push each drive in straight and do not force it. If it stops early, pull it out and try again."
+    },
+    "look-inside": {
+      "level": "caution",
+      "text": "Look inside before you close the lid: no tools, no loose screws, no cable across an edge."
+    },
+    "paste-skip": {
+      "level": "note",
+      "text": "Skip this step if your heatsinks already have a grey pad on the underside."
+    },
+    "memory-latches": {
+      "level": "note",
+      "text": "Open both latches of a slot before you push a module in."
+    },
+    "gpu-ready-built": {
+      "level": "note",
+      "text": "Each module comes ready built. Do not take it apart."
+    }
+  },
+  "bindings": {
+    "case": {
+      "name": "Case",
+      "pieces": [
+        "standin-4u#0/chassis#0"
+      ]
+    },
+    "board-posts": {
+      "name": "Mainboard post",
+      "pieces": [
+        "standin-4u#0/standoff-0#0",
+        "standin-4u#0/standoff-1#0",
+        "standin-4u#0/standoff-2#0",
+        "standin-4u#0/standoff-3#0",
+        "standin-4u#0/standoff-4#0",
+        "standin-4u#0/standoff-5#0",
+        "standin-4u#0/standoff-6#0",
+        "standin-4u#0/standoff-7#0",
+        "standin-4u#0/standoff-8#0"
+      ]
+    },
+    "rails": {
+      "name": "Rack rail",
+      "pieces": [
+        "standin-4u#0/rail-left#0",
+        "standin-4u#0/rail-right#0"
+      ]
+    },
+    "handles": {
+      "name": "Lifting handle",
+      "pieces": [
+        "standin-4u#0/handle-left#0",
+        "standin-4u#0/handle-right#0"
+      ]
+    },
+    "front-panel": {
+      "name": "Front panel",
+      "pn": "MCP-210-41808-0B",
+      "pieces": [
+        "standin-4u#0/bezel#0"
+      ]
+    },
+    "corner-tab": {
+      "name": "Orange tab at the front left corner",
+      "pieces": [
+        "standin-4u#0/orientation-tab#0"
+      ]
+    },
+    "floor-block": {
+      "name": "Small block on the floor (it has no name in the CAD file)",
+      "pieces": [
+        "standin-4u#0/unnamed-031b6c#0"
+      ]
+    },
+    "gpu-brackets": {
+      "name": "Side bracket for the GPU board",
+      "pieces": [
+        "standin-4u#0/gpu-support-left#0",
+        "standin-4u#0/gpu-support-right#0"
+      ]
+    },
+    "card-cradle": {
+      "name": "Cradle for the network card",
+      "pieces": [
+        "standin-4u#0/nic-cradle#0"
+      ]
+    },
+    "network-card": {
+      "name": "Network card",
+      "pn": "MCX623106AN-CDAT",
+      "pieces": [
+        "standin-4u#0/nic#0"
+      ]
+    },
+    "power-board": {
+      "name": "Power board",
+      "pn": "PDB-4U8G-R2",
+      "pieces": [
+        "standin-4u#0/power#0/pdb#0"
+      ]
+    },
+    "drive-cage": {
+      "name": "Drive cage",
+      "pieces": [
+        "standin-4u#0/drive-bay#0/drive-cage#0"
+      ]
+    },
+    "drive-board": {
+      "name": "Drive board",
+      "pn": "BPN-NVME5-208N",
+      "pieces": [
+        "standin-4u#0/drive-bay#0/drive-backplane#0"
+      ]
+    },
+    "drive-cage-screws": {
+      "name": "Screw M3 x 4 mm",
+      "pn": "MS-0304-ZN",
+      "pieces": [
+        "standin-4u#0/screw-25#0",
+        "standin-4u#0/screw-26#0",
+        "standin-4u#0/screw-27#0",
+        "standin-4u#0/screw-28#0",
+        "standin-4u#0/screw-29#0",
+        "standin-4u#0/screw-30#0"
+      ]
+    },
+    "fan-wall": {
+      "name": "Fan wall",
+      "pieces": [
+        "standin-4u#0/fan-wall#0/fan-cage#0"
+      ]
+    },
+    "fans": {
+      "name": "Fan",
+      "pn": "FAN-0218L4",
+      "pieces": [
+        "standin-4u#0/fan-wall#0/fan-0#0",
+        "standin-4u#0/fan-wall#0/fan-1#0",
+        "standin-4u#0/fan-wall#0/fan-2#0",
+        "standin-4u#0/fan-wall#0/fan-3#0",
+        "standin-4u#0/fan-wall#0/fan-4#0",
+        "standin-4u#0/fan-wall#0/fan-5#0"
+      ]
+    },
+    "fan-wall-screws": {
+      "name": "Screw M3 x 4 mm",
+      "pn": "MS-0304-ZN",
+      "pieces": [
+        "standin-4u#0/screw-31#0",
+        "standin-4u#0/screw-32#0",
+        "standin-4u#0/screw-33#0",
+        "standin-4u#0/screw-34#0",
+        "standin-4u#0/screw-35#0",
+        "standin-4u#0/screw-36#0",
+        "standin-4u#0/screw-37#0",
+        "standin-4u#0/screw-38#0",
+        "standin-4u#0/screw-39#0"
+      ]
+    },
+    "air-guide": {
+      "name": "Corner air guide",
+      "pieces": [
+        "standin-4u#0/air-duct#0"
+      ]
+    },
+    "mainboard": {
+      "name": "Mainboard",
+      "pn": "MBD-X13DEG-QT",
+      "found": "Large flat box",
+      "pieces": [
+        "standin-4u#0/mainboard#0"
+      ]
+    },
+    "mainboard-screws": {
+      "name": "Screw M3 x 4 mm",
+      "pn": "MS-0304-ZN",
+      "found": "Screw bag A",
+      "pieces": [
+        "standin-4u#0/screw-20#0",
+        "standin-4u#0/screw-17#0",
+        "standin-4u#0/screw-23#0",
+        "standin-4u#0/screw-19#0",
+        "standin-4u#0/screw-21#0",
+        "standin-4u#0/screw-16#0",
+        "standin-4u#0/screw-24#0",
+        "standin-4u#0/screw-18#0",
+        "standin-4u#0/screw-22#0"
+      ]
+    },
+    "processors": {
+      "name": "Processor",
+      "pn": "PK8071305072902",
+      "found": "Two small trays",
+      "pieces": [
+        "standin-4u#0/cpu-0#0",
+        "standin-4u#0/cpu-1#0"
+      ]
+    },
+    "thermal-paste": {
+      "name": "Thermal paste",
+      "found": "Accessory bag",
+      "noShape": {
+        "qty": 1,
+        "unit": "syringe"
+      }
+    },
+    "heatsinks": {
+      "name": "Heatsink",
+      "pn": "SNK-P0088AP4",
+      "pieces": [
+        "standin-4u#0/heatsink-0#0",
+        "standin-4u#0/heatsink-1#0"
+      ]
+    },
+    "memory": {
+      "name": "Memory module",
+      "pn": "M321R8GA0BB0-CQKZJ",
+      "pieces": [
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#0",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#1",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#2",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#3",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#4",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#5",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#6",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#7",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#8",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#9",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#10",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#11",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#12",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#13",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#14",
+        "standin-4u#0/m321r8ga0bb0-cqkzj-dimm-64gb#15"
+      ]
+    },
+    "drive-data-cable": {
+      "name": "Drive data cable",
+      "pn": "CBL-SAST-0953",
+      "found": "Cable bag",
+      "pieces": [
+        "standin-4u#0/backplane-data#0"
+      ]
+    },
+    "fan-cable": {
+      "name": "Fan cable",
+      "found": "Cable bag",
+      "pieces": [
+        "standin-4u#0/fan-harness#0"
+      ]
+    },
+    "mainboard-power-cable": {
+      "name": "Mainboard power cable",
+      "pn": "CBL-PWEX-1136",
+      "found": "Cable bag",
+      "noShape": {
+        "qty": 1
+      }
+    },
+    "network-card-cable": {
+      "name": "Network card cable",
+      "found": "Cable bag",
+      "noShape": {
+        "qty": 1
+      }
+    },
+    "air-cover": {
+      "name": "Air cover",
+      "pieces": [
+        "standin-4u#0/air-shroud#0"
+      ]
+    },
+    "gpu-board": {
+      "name": "GPU board",
+      "pieces": [
+        "standin-4u#0/gpu-tray#0/gpu-baseboard#0"
+      ]
+    },
+    "gpu-power-cable-1": {
+      "name": "GPU power cable",
+      "pn": "CBL-PWEX-1040",
+      "found": "Cable bag",
+      "pieces": [
+        "standin-4u#0/gpu-power-0#0"
+      ]
+    },
+    "gpu-power-cable-2": {
+      "name": "GPU power cable",
+      "pn": "CBL-PWEX-1040",
+      "found": "Cable bag",
+      "pieces": [
+        "standin-4u#0/gpu-power-1#0"
+      ]
+    },
+    "gpu-modules": {
+      "name": "GPU module",
+      "pn": "900-21010-0040",
+      "pieces": [
+        "standin-4u#0/gpu-tray#0/gpu-0#0",
+        "standin-4u#0/gpu-tray#0/gpu-1#0",
+        "standin-4u#0/gpu-tray#0/gpu-2#0",
+        "standin-4u#0/gpu-tray#0/gpu-3#0",
+        "standin-4u#0/gpu-tray#0/gpu-4#0",
+        "standin-4u#0/gpu-tray#0/gpu-5#0",
+        "standin-4u#0/gpu-tray#0/gpu-6#0",
+        "standin-4u#0/gpu-tray#0/gpu-7#0"
+      ]
+    },
+    "lid": {
+      "name": "Lid",
+      "pieces": [
+        "standin-4u#0/lid#0"
+      ]
+    },
+    "lid-screws": {
+      "name": "Screw M3 x 4 mm",
+      "pn": "MS-0304-ZN",
+      "found": "Screw bag B",
+      "pieces": [
+        "standin-4u#0/screw-00#0",
+        "standin-4u#0/screw-01#0",
+        "standin-4u#0/screw-02#0",
+        "standin-4u#0/screw-03#0",
+        "standin-4u#0/screw-04#0",
+        "standin-4u#0/screw-05#0",
+        "standin-4u#0/screw-06#0",
+        "standin-4u#0/screw-07#0",
+        "standin-4u#0/screw-08#0",
+        "standin-4u#0/screw-09#0",
+        "standin-4u#0/screw-10#0",
+        "standin-4u#0/screw-11#0",
+        "standin-4u#0/screw-12#0",
+        "standin-4u#0/screw-13#0",
+        "standin-4u#0/screw-14#0",
+        "standin-4u#0/screw-15#0"
+      ]
+    },
+    "drives": {
+      "name": "Drive",
+      "pn": "MZWLO1T9HCJR-00A07",
+      "found": "Drive box",
+      "pieces": [
+        "standin-4u#0/drive-bay#0/drive-0#0",
+        "standin-4u#0/drive-bay#0/drive-1#0",
+        "standin-4u#0/drive-bay#0/drive-2#0",
+        "standin-4u#0/drive-bay#0/drive-3#0",
+        "standin-4u#0/drive-bay#0/drive-4#0",
+        "standin-4u#0/drive-bay#0/drive-5#0",
+        "standin-4u#0/drive-bay#0/drive-6#0",
+        "standin-4u#0/drive-bay#0/drive-7#0"
+      ]
+    },
+    "power-supplies": {
+      "name": "Power supply",
+      "pn": "PWS-3K01A-1R",
+      "found": "Four long boxes",
+      "pieces": [
+        "standin-4u#0/power#0/psu-0#0",
+        "standin-4u#0/power#0/psu-1#0",
+        "standin-4u#0/power#0/psu-2#0",
+        "standin-4u#0/power#0/psu-3#0"
+      ]
+    }
+  },
+  "base": [
+    "case",
+    "board-posts",
+    "rails",
+    "handles",
+    "front-panel",
+    "corner-tab",
+    "floor-block",
+    "gpu-brackets",
+    "card-cradle",
+    "network-card",
+    "power-board",
+    "drive-cage",
+    "drive-board",
+    "drive-cage-screws",
+    "fan-wall",
+    "fans",
+    "fan-wall-screws",
+    "air-guide"
+  ],
+  "unlisted": "fitted",
+  "steps": [
+    {
+      "id": "fit-mainboard",
+      "section": "Mainboard",
+      "title": "Lower the mainboard onto its nine posts and screw it down",
+      "text": "Hold the board by its edges and lower it straight down. Each of the nine posts must show through its hole before any screw goes in.",
+      "way": "The two blocks of memory slots run from front to rear, with the two processor sockets side by side between them.",
+      "before": [
+        "static",
+        "screws-loose-first"
+      ],
+      "tools": [
+        "wrist-strap",
+        "ph1"
+      ],
+      "torque": [
+        {
+          "value": 0.6,
+          "unit": "Nm",
+          "on": "mainboard-screws"
+        }
+      ],
+      "items": [
+        {
+          "use": "mainboard",
+          "qty": 1
+        },
+        {
+          "use": "mainboard-screws",
+          "qty": 9,
+          "numbered": true,
+          "order": "Start with the middle screw. Then left, right, front and rear. Then the four corners: front left, rear right, rear left, front right."
+        }
+      ],
+      "checks": [
+        "All nine posts show through their holes.",
+        "The board does not rock.",
+        "All nine screws are tightened to 0.6 N·m."
+      ]
+    },
+    {
+      "id": "seat-processors",
+      "section": "Processors and memory",
+      "title": "Seat both processors",
+      "text": "Hold each processor by its edges and lower it straight into its socket. Do not press.",
+      "way": "The small gold triangle on the processor goes to the triangle marked on the socket.",
+      "before": [
+        "socket-pins"
+      ],
+      "items": [
+        {
+          "use": "processors",
+          "qty": 2
+        }
+      ],
+      "checks": [
+        "Each processor sits flat in its socket."
+      ]
+    },
+    {
+      "id": "thermal-paste",
+      "title": "Put thermal paste on both processors",
+      "text": "Put one dot the size of a pea in the middle of each processor. Do not spread it: the heatsink does that.",
+      "before": [
+        "paste-skip"
+      ],
+      "items": [
+        {
+          "use": "thermal-paste",
+          "qty": 1
+        }
+      ],
+      "at": [
+        "processors"
+      ],
+      "checks": [
+        "Both processors have a dot of paste."
+      ]
+    },
+    {
+      "id": "fit-heatsinks",
+      "title": "Fit both heatsinks",
+      "way": "The arrow on the heatsink label points to the rear.",
+      "before": [
+        "heatsink-straight"
+      ],
+      "tools": [
+        "t30"
+      ],
+      "torque": [
+        {
+          "value": 0.9,
+          "unit": "Nm",
+          "on": "heatsinks",
+          "note": "Four nuts on each heatsink, a little at a time, in the order 1 to 4 printed on it."
+        }
+      ],
+      "items": [
+        {
+          "use": "heatsinks",
+          "qty": 2
+        }
+      ],
+      "checks": [
+        "Each heatsink sits level and does not rock.",
+        "All eight nuts are tightened to 0.9 N·m."
+      ]
+    },
+    {
+      "id": "fit-memory",
+      "title": "Push in the 16 memory modules",
+      "text": "Push each module straight down until both latches click shut.",
+      "way": "The notch in the gold edge is off-centre, so a module fits only one way round.",
+      "before": [
+        "memory-latches"
+      ],
+      "items": [
+        {
+          "use": "memory",
+          "qty": 16
+        }
+      ],
+      "checks": [
+        "Both latches have clicked shut on all 16 modules."
+      ]
+    },
+    {
+      "id": "drive-data-cable",
+      "section": "Cables",
+      "title": "Connect the drive data cable",
+      "text": "Run the cable along the gap between the fan wall and the right-hand side of the case.",
+      "items": [
+        {
+          "use": "drive-data-cable",
+          "qty": 1,
+          "cable": {
+            "from": {
+              "on": "mainboard",
+              "label": "DATA 1, front edge, right-hand end"
+            },
+            "to": {
+              "on": "drive-board",
+              "label": "DATA, right-hand end, facing the side of the case"
+            },
+            "route": [
+              [
+                392,
+                252,
+                17
+              ],
+              [
+                392,
+                242,
+                17
+              ],
+              [
+                425,
+                242,
+                17
+              ],
+              [
+                425,
+                159,
+                17
+              ],
+              [
+                312,
+                159,
+                17
+              ]
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Both plugs have clicked in."
+      ],
+      "camera": {
+        "view": "top"
+      },
+      "_camera": "From straight above: the cable runs in the gap between the fan wall and the side of the case, and no corner view shows both of its ends."
+    },
+    {
+      "id": "fan-cable",
+      "title": "Connect the fan cable",
+      "text": "The plug on the fan wall is on its back, the side that faces the mainboard.",
+      "items": [
+        {
+          "use": "fan-cable",
+          "qty": 1,
+          "cable": {
+            "from": {
+              "on": "mainboard",
+              "label": "FAN, front edge, left-hand end"
+            },
+            "to": {
+              "on": "fan-wall",
+              "label": "FAN IN, on the back of the fan wall, left of the middle"
+            },
+            "route": [
+              [
+                67,
+                258,
+                20
+              ],
+              [
+                67,
+                258,
+                36
+              ],
+              [
+                67,
+                241,
+                36
+              ],
+              [
+                137,
+                241,
+                36
+              ]
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Both plugs are pushed fully home."
+      ]
+    },
+    {
+      "id": "floor-cables",
+      "title": "Connect the two cables that run along the floor",
+      "text": "Both cables start at the rear edge of the mainboard and run back along the floor of the case.",
+      "before": [
+        "cables-flat"
+      ],
+      "items": [
+        {
+          "use": "mainboard-power-cable",
+          "qty": 1,
+          "cable": {
+            "from": {
+              "on": "power-board",
+              "label": "MB PWR, left-hand end, on the side facing the front"
+            },
+            "to": {
+              "on": "mainboard",
+              "label": "PWR 1, rear edge, right of the middle"
+            },
+            "route": [
+              [
+                55,
+                596,
+                30
+              ],
+              [
+                55,
+                480,
+                18
+              ],
+              [
+                345,
+                480,
+                18
+              ],
+              [
+                345,
+                446,
+                18
+              ]
+            ],
+            "radius": 4
+          }
+        },
+        {
+          "use": "network-card-cable",
+          "qty": 1,
+          "cable": {
+            "from": {
+              "on": "mainboard",
+              "label": "NIC, rear edge, right-hand end"
+            },
+            "to": {
+              "on": "network-card",
+              "label": "SIDEBAND, front edge of the card"
+            },
+            "route": [
+              [
+                390,
+                446,
+                16
+              ],
+              [
+                390,
+                560,
+                16
+              ],
+              [
+                388,
+                660,
+                12
+              ],
+              [
+                388,
+                672,
+                10
+              ]
+            ],
+            "radius": 2.5
+          }
+        }
+      ],
+      "checks": [
+        "All four plugs have clicked in.",
+        "Both cables lie flat on the floor."
+      ]
+    },
+    {
+      "id": "air-cover",
+      "section": "Air cover and GPUs",
+      "title": "Fit the air cover over the processors and memory",
+      "items": [
+        {
+          "use": "air-cover",
+          "qty": 1
+        }
+      ],
+      "checks": [
+        "The cover sits level.",
+        "No cable is trapped under its edge."
+      ]
+    },
+    {
+      "id": "gpu-board",
+      "title": "Lower the GPU board and plug in its two power cables",
+      "text": "Lower the board straight down onto its two side brackets. Then run each power cable from the power board, forward under the board, up past its front edge and into the socket on top.",
+      "way": "The two power sockets are on the front edge of the board, the edge nearest the mainboard.",
+      "before": [
+        "static",
+        "gpu-board-cables"
+      ],
+      "items": [
+        {
+          "use": "gpu-board",
+          "qty": 1
+        },
+        {
+          "use": "gpu-power-cable-1",
+          "qty": 1,
+          "cable": {
+            "from": {
+              "on": "power-board",
+              "label": "GPU PWR 1, on the side facing the front"
+            },
+            "to": {
+              "on": "gpu-board",
+              "label": "PWR IN 1, front edge, on top"
+            },
+            "route": [
+              [
+                150,
+                596,
+                30
+              ],
+              [
+                150,
+                456,
+                30
+              ],
+              [
+                150,
+                456,
+                64
+              ],
+              [
+                150,
+                470,
+                64
+              ]
+            ]
+          }
+        },
+        {
+          "use": "gpu-power-cable-2",
+          "qty": 1,
+          "cable": {
+            "from": {
+              "on": "power-board",
+              "label": "GPU PWR 2, on the side facing the front"
+            },
+            "to": {
+              "on": "gpu-board",
+              "label": "PWR IN 2, front edge, on top"
+            },
+            "route": [
+              [
+                298,
+                596,
+                30
+              ],
+              [
+                298,
+                456,
+                30
+              ],
+              [
+                298,
+                456,
+                64
+              ],
+              [
+                298,
+                470,
+                64
+              ]
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "The board rests on both side brackets.",
+        "All four plugs have clicked in."
+      ]
+    },
+    {
+      "id": "gpu-modules",
+      "title": "Push in the eight GPU modules",
+      "text": "Push each module straight down into its slot, working from left to right.",
+      "way": "The metal bracket of each module faces the rear of the case.",
+      "before": [
+        "static",
+        "gpu-two-hands",
+        "gpu-ready-built"
+      ],
+      "items": [
+        {
+          "use": "gpu-modules",
+          "qty": 8
+        }
+      ],
+      "checks": [
+        "Every bracket sits flush with the rear of the case."
+      ]
+    },
+    {
+      "id": "close-lid",
+      "section": "Close up",
+      "title": "Close the lid and fit its 16 screws",
+      "text": "Lower the lid, start every screw by hand, then tighten them all.",
+      "before": [
+        "look-inside"
+      ],
+      "tools": [
+        "ph1"
+      ],
+      "torque": [
+        {
+          "value": 0.6,
+          "unit": "Nm",
+          "on": "lid-screws"
+        }
+      ],
+      "items": [
+        {
+          "use": "lid",
+          "qty": 1
+        },
+        {
+          "use": "lid-screws",
+          "qty": 16
+        }
+      ],
+      "checks": [
+        "All 16 screws are in and tightened to 0.6 N·m.",
+        "Nothing rattles when the case is tilted gently."
+      ]
+    },
+    {
+      "id": "slide-in-drives",
+      "section": "Drives and power",
+      "title": "Slide in the eight drives from the front",
+      "text": "Push each drive into its bay through the opening in the front panel until its latch clicks. Work from left to right.",
+      "way": "The end with the gold connector goes in first.",
+      "before": [
+        "drives-straight"
+      ],
+      "items": [
+        {
+          "use": "drives",
+          "qty": 8,
+          "move": {
+            "from": "front"
+          }
+        }
+      ],
+      "checks": [
+        "All eight drives sit flush with the front panel.",
+        "Every latch has clicked."
+      ]
+    },
+    {
+      "id": "slide-in-power-supplies",
+      "title": "Slide in the four power supplies from the rear",
+      "text": "Push each power supply into its bay at the rear of the case until its latch clicks.",
+      "way": "The handle and the power socket face out of the rear of the case.",
+      "before": [
+        "no-power-cord"
+      ],
+      "items": [
+        {
+          "use": "power-supplies",
+          "qty": 4
+        }
+      ],
+      "checks": [
+        "All four power supplies sit flush with the rear of the case.",
+        "No power cord is plugged in."
+      ]
+    }
+  ]
+}

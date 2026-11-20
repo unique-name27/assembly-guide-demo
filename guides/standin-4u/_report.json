@@ -1,0 +1,333 @@
+{
+  "v": 1,
+  "id": "standin-4u",
+  "result": "warn",
+  "checks": [
+    {
+      "code": "NO_PARTS",
+      "level": "pass",
+      "message": "The guide shows 143 parts.",
+      "data": {
+        "parts": 143
+      }
+    },
+    {
+      "code": "UNITS_SUSPECT",
+      "level": "pass",
+      "message": "The whole assembly measures about 448 x 800 x 176 mm (934 mm corner to corner), a believable size. If the real product is nowhere near that, the CAD file was exported in the wrong units.",
+      "data": {
+        "diagonalMm": 934,
+        "sizeMm": [
+          448,
+          800,
+          176
+        ]
+      }
+    },
+    {
+      "code": "NAME_MISSING",
+      "level": "warn",
+      "message": "1 part has no usable name in the CAD file (no name at all, or one without a single letter or digit). It still works, but it is listed as \"unnamed-…\" when you write instructions, which makes it harder to find. Naming it in CAD and exporting again fixes that.",
+      "data": {
+        "ids": [
+          "standin-4u#0/unnamed-031b6c#0"
+        ]
+      }
+    },
+    {
+      "code": "NAME_DUPLICATE",
+      "level": "warn",
+      "message": "The name \"BRACKET\" is used for 2 different shapes. An instruction that says \"BRACKET\" could mean either, so check which part lights up when you match instructions to parts, or give the parts different names in CAD.",
+      "data": {
+        "names": [
+          {
+            "name": "BRACKET",
+            "shapes": 2
+          }
+        ]
+      }
+    },
+    {
+      "code": "MIRRORED_BAKED",
+      "level": "pass",
+      "message": "1 part is a mirror image of another part (like a left and a right bracket). It was given its own shape so it shows the right way round. Nothing to do.",
+      "data": {
+        "count": 1
+      }
+    },
+    {
+      "code": "NO_COLOUR",
+      "level": "pass",
+      "message": "46 of 143 parts (32%) have no colour in the CAD file. The viewer gives those a colour that suits the kind of part (metal, circuit board, cable and so on).",
+      "data": {
+        "count": 46,
+        "share": 0.322
+      }
+    },
+    {
+      "code": "TRI_BUDGET",
+      "level": "pass",
+      "message": "The 3D model is drawn with 56,916 triangles (the small flat pieces every 3D shape is built from), well within the 1,500,000 an ordinary laptop can show smoothly.",
+      "data": {
+        "drawn": 56916,
+        "limit": 1500000,
+        "shapesOverTheirCap": 0
+      }
+    },
+    {
+      "code": "SIZE_BUDGET",
+      "level": "pass",
+      "message": "The model file is 0.17 MB, within the 8.00 MB that loads quickly over a normal connection.",
+      "data": {
+        "bytes": 181772,
+        "limit": 8388608
+      }
+    },
+    {
+      "code": "EMPTY_GEOMETRY",
+      "level": "pass",
+      "message": "Every part has a shape to show."
+    },
+    {
+      "code": "MESH_INCOMPLETE",
+      "level": "pass",
+      "message": "Every face of every part was converted."
+    },
+    {
+      "code": "EMPTY_GROUP",
+      "level": "pass",
+      "message": "Every group of parts has something in it."
+    },
+    {
+      "code": "ID_COLLISION",
+      "level": "pass",
+      "message": "Every part and every group of parts has its own id, so an instruction always points at exactly one thing."
+    },
+    {
+      "code": "INCOMPLETE",
+      "level": "pass",
+      "message": "The whole file was read."
+    },
+    {
+      "code": "SIMPLIFIED",
+      "level": "pass",
+      "message": "No part shape needed any detail removed.",
+      "data": {
+        "shapes": []
+      }
+    },
+    {
+      "code": "EXPLODE_HINTS",
+      "level": "pass",
+      "message": "The hints file standin-4u.hints.json was used. It names 1 set of parts that move as one piece.",
+      "data": {
+        "file": "standin-4u.hints.json",
+        "baseParts": 0,
+        "units": 1
+      }
+    },
+    {
+      "code": "EXPLODE_FALLBACK",
+      "level": "pass",
+      "message": "Every part has a clear way out, so the blow-up could be worked out for all of them: the parts come off in 7 rounds, each in a direction where nothing is in its way.",
+      "data": {
+        "ids": [],
+        "layers": 7,
+        "base": "standin-4u#0/chassis#0",
+        "baseParts": 1,
+        "movesAsOnePiece": 9,
+        "pastALip": []
+      }
+    },
+    {
+      "code": "EXPLODE_BASE",
+      "level": "pass",
+      "message": "The base, the part that stays put while everything else is taken off it, is \"CHASSIS-TUB\" (standin-4u#0/chassis#0). It was picked because more parts sit on it than on any other. If that is the wrong part, or the chassis is made of several parts, name them under \"base\" in a hints file and convert again.",
+      "data": {
+        "ids": [
+          "standin-4u#0/chassis#0"
+        ],
+        "source": "auto"
+      }
+    },
+    {
+      "code": "EXPLODE_UNITS",
+      "level": "pass",
+      "message": "9 sets of parts move as one piece in the blow-up (1 named in the hints file, the rest found because the same sub-assembly is used more than once). Every other part comes off by itself.",
+      "data": {
+        "movesAsOnePiece": 9,
+        "declared": 1,
+        "subAssemblies": 14
+      }
+    },
+    {
+      "code": "UP_SUSPECT",
+      "level": "pass",
+      "message": "117 of the 138 parts that move come off upwards (up is set to +Z), which fits a model that stands the right way up.",
+      "data": {
+        "up": "+Z",
+        "moving": 138,
+        "leaveUp": 117,
+        "leaveOther": 5,
+        "other": "+Y"
+      }
+    },
+    {
+      "code": "EXPLODE_SPREAD",
+      "level": "pass",
+      "message": "Blown apart, the model measures about 672 x 1,410 x 1,017 mm, with about 56 mm of air between stacked parts. The cover (\"TOP-LID\") is lifted about 369 mm clear of the parts under it, so that those can be seen from the side. No direction is stretched beyond 3.25 times its own assembled size or 1.35 times the model's longest side (800 mm), whichever is more, so it still reads well on screen.",
+      "data": {
+        "sizeRatio": [
+          1.5,
+          1.763,
+          5.78
+        ],
+        "limit": 3.25,
+        "wholeLimit": 1.35,
+        "blownSizeMm": [
+          672,
+          1410,
+          1017
+        ],
+        "longestSideMm": 800,
+        "gapMm": 56.018,
+        "coverIds": [
+          "standin-4u#0/lid#0"
+        ],
+        "coverAirMm": 369.204
+      }
+    }
+  ],
+  "budgets": {
+    "tris": {
+      "used": 56916,
+      "limit": 1500000
+    },
+    "glbBytes": {
+      "used": 181772,
+      "limit": 8388608
+    }
+  },
+  "topOffenders": [
+    {
+      "g": "g0011",
+      "name": "MS-0304-ZN_SCREW-M3X4",
+      "tris": 332,
+      "uses": 42
+    },
+    {
+      "g": "g0023",
+      "name": "FAN-0218L4_FAN-MODULE",
+      "tris": 1168,
+      "uses": 6
+    },
+    {
+      "g": "g0000",
+      "name": "CHASSIS-TUB",
+      "tris": 6072,
+      "uses": 1
+    },
+    {
+      "g": "g0001",
+      "name": "TOP-LID",
+      "tris": 3316,
+      "uses": 1
+    },
+    {
+      "g": "g0030",
+      "name": "CBL-PWEX-1040_CABLE-GPU-POWER",
+      "tris": 1580,
+      "uses": 2
+    },
+    {
+      "g": "g0026",
+      "name": "GPU-SHROUD",
+      "tris": 388,
+      "uses": 8
+    },
+    {
+      "g": "g0031",
+      "name": "CBL-SAST-0953_CABLE-BACKPLANE-DATA",
+      "tris": 2300,
+      "uses": 1
+    },
+    {
+      "g": "g0002",
+      "name": "MCP-210-41808-0B_FRONT-BEZEL",
+      "tris": 1648,
+      "uses": 1
+    },
+    {
+      "g": "g0032",
+      "name": "CABLE-FAN-HARNESS",
+      "tris": 1580,
+      "uses": 1
+    },
+    {
+      "g": "g0029",
+      "name": "PWS-3K01A-1R_PSU-3000W",
+      "tris": 384,
+      "uses": 4
+    },
+    {
+      "g": "g0010",
+      "name": "STANDOFF-M3X8",
+      "tris": 168,
+      "uses": 9
+    },
+    {
+      "g": "g0017",
+      "name": "M321R8GA0BB0-CQKZJ_DIMM-64GB",
+      "tris": 92,
+      "uses": 16
+    },
+    {
+      "g": "g0022",
+      "name": "FAN-CAGE",
+      "tris": 1464,
+      "uses": 1
+    },
+    {
+      "g": "g0012",
+      "name": "MBD-X13DEG-QT_MAINBOARD-PCB",
+      "tris": 1424,
+      "uses": 1
+    },
+    {
+      "g": "g0019",
+      "name": "DRIVE-CAGE",
+      "tris": 1076,
+      "uses": 1
+    },
+    {
+      "g": "g0003",
+      "name": "LIFT-HANDLE",
+      "tris": 512,
+      "uses": 2
+    },
+    {
+      "g": "g0016",
+      "name": "SNK-P0088AP4_HEATSINK",
+      "tris": 476,
+      "uses": 2
+    },
+    {
+      "g": "g0027",
+      "name": "GPU-IO-BRACKET",
+      "tris": 100,
+      "uses": 8
+    },
+    {
+      "g": "g0014",
+      "name": "DIMM-SLOT-BLOCK",
+      "tris": 268,
+      "uses": 2
+    },
+    {
+      "g": "g0021",
+      "name": "MZWLO1T9HCJR-00A07_NVME-DRIVE",
+      "tris": 60,
+      "uses": 8
+    }
+  ]
+}
